@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block subheader %}
+    <div id="filters" class="bg-light">
+        <div class="container">
+            <div class="header-row justify-content-lg-between justify-content-center">
+                <nav class="filters with-arrows">
+                    <ul class="filter-container justify-content-between">
+                        <li class="filter-item">
+                            <div class="filter-section">
+                                <label for="client"> Client </label>
+                                <select id="client" class="selectpicker show-tick filter" multiple
+                                        data-actions-box="true" data-selected-text-format="count > 1">
+                                    {% for client in clients %}
+                                        <option value="{{ client.pk }}">{{ client.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </li>
+
+                        <li class="filter-item">
+                            <div class="filter-section">
+                                <label for="equipment"> Equipment </label>
+                                <select id="equipment" class="selectpicker show-tick filter" multiple
+                                        data-actions-box="true" data-selected-text-format="count > 1">
+                                    {% for equipment in equipments %}
+                                        <option value="{{ equipment.pk }}">{{ equipment.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </li>
+
+                        <li class="filter-item">
+                            <div class="filter-section">
+                                <label for="mode"> Mode </label>
+                                <select id="mode" class="selectpicker show-tick filter" multiple
+                                        data-actions-box="true" data-selected-text-format="count > 1">
+                                    {% for mode in modes %}
+                                        <option value="{{ mode.pk }}">{{ mode.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </li>
+
+                        <li class="filter-item">
+                            <input type="text" id="minutes" class="form-control search"
+                                   value="{% if minutes %}{{ minutes }}{% endif %}" placeholder="minutes">
+                        </li>
+
+                        <li class="filter-item">
+                            <input type="text" id="data_start" class="form-control search"
+                                   value="{% if start %}{{ start }}{% endif %}" placeholder="0000-00-00 start">
+                        </li>
+
+                        <li class="filter-item">
+                            <input type="text" id="data_stop" class="form-control search"
+                                   value="{% if stop %}{{ stop }}{% endif %}" placeholder="0000-00-00 stop"
+                                   pattern="[0-9]{2}\-[0-9]{2}\-[0-9]{4}"
+                            >
+                        </li>
+
+                        <li class="filter-item">
+                            <input type="text" id="time_start" class="form-control search"
+                                   value="{% if start %}{{ start }}{% endif %}" placeholder="00:00:00 start">
+                        </li>
+
+                        <li class="filter-item">
+                            <input type="text" id="time_stop" class="form-control search"
+                                   value="{% if stop %}{{ stop }}{% endif %}" placeholder="00:00:00 stop">
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div id="result"></div>
+        <button id="load_more" class="button button-dark button-large button-rounded m-0"
+                style="width: 300px">Load more
+        </button>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'js/custom/list.js' %}"></script>
+
+    <script>
+        $(document).ready(function () {
+            initApiUrl = "{{ api_url }}";
+            initListPage(initApiUrl, $('#load_more'), $('#result'));
+        })
+    </script>
+{% endblock %}
